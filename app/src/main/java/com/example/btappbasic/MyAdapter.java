@@ -1,18 +1,22 @@
 package com.example.btappbasic;
 
+import android.bluetooth.BluetoothDevice;
+import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-    private List<String> data;
+    private List<BluetoothDevice> data;
 
-    public MyAdapter(List<String> data) {
+    public MyAdapter(List<BluetoothDevice> data) {
         this.data = data;
     }
 
@@ -25,8 +29,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String item = data.get(position);
-        holder.textView.setText(item);
+        BluetoothDevice item = data.get(position);
+        if (ActivityCompat.checkSelfPermission(holder.btaddress.getContext(), android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            holder.btname.setText(item.getName());
+            holder.btaddress.setText(item.getAddress());
+        }
     }
 
     @Override
@@ -35,11 +42,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
+        public TextView btname,btaddress;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.text_view);
+            btname = itemView.findViewById(R.id.btname);
+            btaddress = itemView.findViewById(R.id.btaddress);
         }
     }
 }
