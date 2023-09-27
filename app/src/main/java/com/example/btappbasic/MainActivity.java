@@ -3,6 +3,7 @@ package com.example.btappbasic;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,11 +103,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void recyclerview(List<BluetoothDevice> devicesList) {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         MyAdapter adapter = new MyAdapter(devicesList);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BluetoothDevice item, int position) {
+                BluetoothDevice selectedDevice  = item;
+                BluetoothSocket btSocket = selectedDev
+            }
+        });
 
     }
 

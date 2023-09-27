@@ -1,6 +1,7 @@
 package com.example.btappbasic;
 
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private List<BluetoothDevice> data;
-
+    private OnItemClickListener clickListener;
     public MyAdapter(List<BluetoothDevice> data) {
         this.data = data;
     }
@@ -33,6 +34,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         if (ActivityCompat.checkSelfPermission(holder.btaddress.getContext(), android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             holder.btname.setText(item.getName());
             holder.btaddress.setText(item.getAddress());
+            final int _position = position;
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (clickListener != null) {
+                        clickListener.onItemClick(item, _position);
+                    }
+                }
+            });
         }
     }
 
@@ -50,5 +60,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             btaddress = itemView.findViewById(R.id.btaddress);
         }
     }
-}
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
+    }
+    public interface OnItemClickListener {
+        void onItemClick(BluetoothDevice item, int position);
+    }}
 
